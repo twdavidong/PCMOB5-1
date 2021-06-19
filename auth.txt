@@ -1,0 +1,69 @@
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/repairaman/mysite/db.sqlite'
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+
+
+db = SQLAlchemy(app)
+
+## Add model for BlogPost
+class BlogPost(db.Model):
+    # no need init!
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80))
+    content = db.Column(db.String(400))
+
+    def json(self):
+        return {"id": self.id, \
+                "title": self.title, \
+                "content": self.content}
+
+## Create Database
+db.create_all()
+
+@app.route('/create', methods=['POST'])
+def createPost():
+    json_data = request.get_json(force=True)
+    title = json_data["title"]
+    content = json_data["content"]
+    post = BlogPost(title=title, content=content)
+    db.session.add(post)
+    db.session.commit()
+    return post.json()
+
+@app.route('/posts/<int:id>', methods=['GET','DELETE', 'PUT'])
+def getPost(id):
+    # find the post with the given id before deciding what to do with it
+    post = BlogPost.query.get(id)
+
+    if request.method == 'DELETE':
+        db.session.delete(post)
+        db.session.commit()
+        return{"Message":"Post id " + str(id) + " has been deleted."}
+
+    if request.method == 'PUT':
+        json_data = request.json
+
+        if 'title' in json_data:
+            post.title = json_data['title']
+        if 'content' in json_data:
+            post.title = json_data['content']
+        db.session.commit()
+
+    return post.json()
+
+@app.route('/posts')
+def getAllPosts():
+    posts = BlogPost.query.all()
+    json_posts = []
+    for post in posts:
+        json_posts.append(post.json())
+    return jsonify(json_posts)
+    ## Alternatively...
+    # return jsonify([post.json() for post in posts])
