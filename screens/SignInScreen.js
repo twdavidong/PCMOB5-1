@@ -33,7 +33,7 @@ export default function SignInScreen({ navigation }) {
         password,
       });
       console.log("Success logging in~~");
-      console.log(response);
+      // console.log(response);
       
      //     AsyncStorage.setItem("token", response.data.access_token);
       await AsyncStorage.setItem("token", response.data.access_token);

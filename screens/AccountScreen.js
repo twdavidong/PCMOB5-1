@@ -13,7 +13,11 @@ export default function AccountScreen({ navigation }) {
   async function getUsername () {
     console.log("----Getting Username -----");
     const token = await AsyncStorage.getItem("token");  // first await....
-    console.log('Token is ${token}');
+    if (token == null) {
+      signOut();
+      return;
+    }
+    console.log(`Token is ${token}`);
     try {
       const response = await axios.get(API + API_WHOAMI, {     // second await....
         headers: { Authorization: 'JWT ${token}' },
@@ -47,7 +51,7 @@ export default function AccountScreen({ navigation }) {
     getUsername();
 
     return removeListener;
-  },[]);
+  }, []);
 
   function signOut() {
     AsyncStorage.removeItem("token");
@@ -57,6 +61,7 @@ export default function AccountScreen({ navigation }) {
   return (
     <View style={commonStyles.container}>
       <Text>Account Screen</Text>
+      <Text>{username}</Text>
       <Button title="Sign out" onPress={signOut} />
     </View>
   );
