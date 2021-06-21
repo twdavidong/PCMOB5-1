@@ -36,11 +36,13 @@ export default function App() {
       <Stack.Navigator 
         mode="modal" 
         headerMode="none"
-        initialRouteName = "Account"
+        //initialRouteName = "Account"
+        screenOptions={{ animationEnabled: false }}
       >
         <Stack.Screen component={AccountScreen} name="Account" />
         <Stack.Screen component={SignInScreen} name="SignIn" />
         <Stack.Screen component={SignUpScreen} name="SignUp" />
+        <Stack.Screen component={TabStack} name="TabStack" />
       </Stack.Navigator>
     </NavigationContainer>
   );
