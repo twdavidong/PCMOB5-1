@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -22,8 +23,10 @@ export default function SignInScreen({ navigation }) {
   const [errorText, setErrorText] = useState("");
   const [loading, setLoading] = useState(false);
 
+
+  // ===================== FUNCTION LOGIN w Authenthication
+
   async function login() {
-    console.log("---David--- Login time ---OTW---");
     Keyboard.dismiss();
 
     try {
@@ -35,11 +38,12 @@ export default function SignInScreen({ navigation }) {
       console.log("Success logging in~~");
       // console.log(response);
       
-     //     AsyncStorage.setItem("token", response.data.access_token);
       await AsyncStorage.setItem("token", response.data.access_token);
       setLoading(false);
       navigation.navigate("Account");
-      } catch (error) {
+      } 
+    
+    catch (error) {
         setLoading(false);
         console.log("Error logging in!");
         console.log(error.response);
@@ -48,10 +52,13 @@ export default function SignInScreen({ navigation }) {
       }
     }    
 
+    // = RETURN ========================================================================================================
+    const image = { uri: "../assets/image.jpg" };
+
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Sign in to blog</Text>
+        <View style={styles.container}> <ImageBackground source={require('../assets/image.jpg')} style={styles.image}>
+          <Text style={styles.title}>Sign in to Blog</Text>
           <Text style={styles.fieldTitle}>Username</Text>
           <TextInput
             style={styles.input}
@@ -63,6 +70,8 @@ export default function SignInScreen({ navigation }) {
           <Text style={styles.fieldTitle}>Password</Text>
           <TextInput
             style={styles.input}
+            placeholder="Enter the Magic Word"
+            secureTextEntry={true}
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
@@ -91,54 +100,100 @@ export default function SignInScreen({ navigation }) {
           <Text style={styles.switchText}>Register for a new account</Text>
               </TouchableOpacity>
                   <Text style={styles.errorText}>{errorText}</Text>
-                  <View style={{ height: 20, alignItems: "left"}}></View>
+                  <View style={{ height: 20, alignItems: "left"}}></View></ImageBackground>
       </View>
       </TouchableWithoutFeedback>
     );
   }
 
-const styles = StyleSheet.create({
-  container: {
+  const styles = StyleSheet.create({  // ============ Styles ======================
+    // Container ==================================
+container: {
+flex: 1,
+justifyContent: 'space-around',
+padding: 24,
+},
+    // Header ==================================
+textHeader: {
+marginBottom:10,
+fontSize: 30,
+fontWeight: 'bold',
+color: '#4050D7',
+},
+    // Title ==================================
+title: {            
+marginBottom: 10,
+fontSize: 30,
+fontWeight: "bold",
+color: '#D79940',
+},
+fieldTitle: {            
+marginBottom: 10,
+fontSize: 20,
+fontWeight: "normal",
+color: '#D79940',
+},
+titleContainer: {
+backgroundColor: "orange",
+padding: 10,
+margin: 10,
+flex: 0.5,
+justifyContent: "center",
+borderRadius: 20,
+},
+    // Filler & Background ==========================
+fillerContainer:{
+padding: 10,
+backgroundColor: "blue",
+flex: 0.25,
+width: "50%",
+},
+image: {
     flex: 1,
+    resizeMode: "cover",
     justifyContent: "center",
-    padding: 24,
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: "bold",
-    marginBottom: 24,
-  },
-  fieldTitle: {
-    fontSize: 18,
-    marginBottom: 12,
-  },
-  input: {
-    borderColor: "#999",
-    borderWidth: 1,
-    marginBottom: 24,
-    padding: 4,
-    height: 36,
-    fontSize: 18,
-    backgroundColor: "white",
-  },
-  loginButton: {
-    backgroundColor: "blue",
-    width: 120,
-    alignItems: "center",
-    padding: 18,
-    marginTop: 12,
-    marginBottom: 36,
-  },
-  buttonText: {
-    color: "red",
-    fontWeight: "bold",
-    fontSize: 18,
-  },
-  switchText: {
-    color: "aquamarine",
-  },
-  errorText: {
-    color: "red",
-    height: 40,
-  },
+    width: '100%',
+    height: '100%',
+  },                    
+    // Input ==========================
+arrivalTime: {      
+marginBottom: 10,
+fontSize: 20,
+color: '#D79940',
+},
+input: {      
+padding: 10,
+borderWidth: 1,
+marginBottom: 10,
+fontSize: 20,
+color: '#D79940',
+},
+    // Button ==============================
+button: {             
+marginBottom: 20,
+borderRadius: 15,
+backgroundColor: '#D740D0',
+paddingVertical: 20,
+paddingHorizontal: 80,
+},
+loginButton: {
+fontSize: 40,
+marginBottom: 20,
+borderRadius: 15,
+backgroundColor: '#D740D0',
+paddingVertical: 20,
+paddingHorizontal: 80,
+},
+textButton:{
+fontSize: 30,
+color: '#9ED740'
+},
+// Error =====================================
+errorText: {
+color: "red",
+marginTop: 20,
+marginLeft: 20,
+marginRight: 20,
+height: 40,
+},
 });

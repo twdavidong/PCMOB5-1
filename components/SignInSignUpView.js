@@ -10,6 +10,9 @@ import {
   Keyboard,
   ActivityIndicator,
 } from "react-native";
+
+const image = { uri: "../assets/image.jpg" };
+
 import { useAuth } from "../hooks/useAPI.js";
 export default function SignInSignUpView({ navigation, isSignIn }) {
   const [username, setUsername] = useState("");
