@@ -18,13 +18,13 @@ export default function AccountScreen({ navigation }) {
       return;
     }
     console.log(`Token is ${token}`);
+    
     try {
       const response = await axios.get(API + API_WHOAMI, {     // second await....
-        headers: { Authorization: 'JWT ${token}' },
+        headers: { Authorization : `JWT {token}` },
       });
-      console.log("Got the username!");
-        setUsername(response.data.username);
-      console.log(response);
+          console.log("Got the username!");
+          console.log(response);
     } catch (error) {
       console.log("Error getting user name!");
       if (error.response) {
@@ -40,15 +40,13 @@ export default function AccountScreen({ navigation }) {
   }
 
   useEffect (() => {
-    console.log("Setting up Nav Listener");
-
+    console.log("Setting up nav Listener");
     const removeListener = navigation.addListener("focus", () => {
-
       console.log("Running nav listener");
-      setUsername(<ActivityIndicator />);
-      getUsername();
+            setUsername(<ActivityIndicator/>);
+            getUsername();
     });
-    getUsername();
+      getUsername();
 
     return removeListener;
   }, []);

@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ActivityIndicator, Touchable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+// import { useAuth } from "../hooks/useAPI.js";
 
 const API = "https://repairaman.pythonanywhere.com";
 const API_LOGIN = "/auth";

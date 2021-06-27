@@ -1,0 +1,38 @@
+### Exercise 3
+print("Exercise 3")
+print("")
+
+def fahtocel():
+            print("")
+            print("You would like to convert Fahrenheit to Celsius.")
+            temp = input("Please enter temperature in Fahreheit:")
+            celsius = (float (temp) - 32) * (5/9)
+            tempr = round(float(temp),2)
+            celsiusr = round(float(celsius),2)
+            print("The temperature for " + str (tempr) + " Farenheit, is " + str (celsiusr) + " degree Celsius.")
+
+def celtofah():
+            print("")
+            print("You would liike to convert Celsius to Fahrenheit.")
+            temp = input("Please enter temperature in Celsius:")
+            fahren = (float (temp) * (9/5)) + 32
+            tempr = round(float(temp),2)
+            fahrenr = round(float(fahren),2)
+            print("The temperature for " + str (tempr) + "  degree Celsius, is " + str (fahrenr) + " Farenheit.")
+
+def temper():
+    print("")
+    print("You are finding Celsius from Fahrenheit or Fahreheit to Celsius?")
+    qtemp = input("For Fahrenheit to Celsius, please press C, for Celsius to Fahrenheit, please press F, otherwise, press Enter to quit : ")
+
+    if qtemp == "C" or qtemp == "c":
+        fahtocel()
+        temper()
+
+    elif qtemp == "F" or qtemp == "f":
+        celtofah()
+        temper()
+
+    elif qtemp == "Q" or qtemp == "q":
+        print("Byebye~~~")
+temper()

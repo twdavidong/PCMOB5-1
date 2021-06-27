@@ -1,0 +1,22 @@
+# Exercise 5
+print("# Exercise 5")
+print("")
+import random
+
+run = True
+while run:
+    qtimes = input("How many times would you like to roll?  Press q to stop.")
+    if qtimes =='q':
+        break
+
+    times = int (qtimes)
+    if times <21:
+        def rolling():
+            for i in range(times):
+                dice_num = i + 1
+                roll = random.randint(1, 6)
+                print("Dice", dice_num, "rolls", roll)
+        rolling()
+
+    else:
+        print("That is too much! Please give a lesser number.")

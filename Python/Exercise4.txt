@@ -1,0 +1,8 @@
+# Exercise 4
+print("# Exercise 4")
+print("")
+numbers_list = [12, 10, 32, 3, 66, 17, 42, 99, 20]
+
+for number in numbers_list:
+    print(number, number**2)
+print("")

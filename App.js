@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabStack from "./components/TabStack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 
 
 const Stack = createStackNavigator();
@@ -37,13 +38,11 @@ export default function App() {
       <Stack.Navigator 
         mode="modal" 
         headerMode="none"
-        //initialRouteName = "Account"
-        screenOptions={{ animationEnabled: false }}
+        initialRouteName = {signedIn ? "Account" : "SignIn"}
+       // screenOptions={{ animationEnabled: false }}
       >
         <Stack.Screen component={AccountScreen} name="Account" />
         <Stack.Screen component={SignInScreen} name="SignIn" />
-        <Stack.Screen component={SignUpScreen} name="SignUp" />
-        <Stack.Screen component={TabStack} name="TabStack" />
       </Stack.Navigator>
     </NavigationContainer>
   );

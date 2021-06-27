@@ -1,0 +1,30 @@
+## Exercise 2
+print ("Exercise 2")
+print ("")
+
+weight = input("Please enter your weight(kg) : ")
+
+weightkg = float(weight) 
+
+print("Your weight is ", weightkg, "kg.")
+
+height = input("Please enter your height(m) : ")
+
+heightm = float(height)
+
+print("Your height is ", heightm, "m.")
+
+## ======== FORMULA ============================================
+
+bmi = (weightkg/heightm/heightm)
+
+print("Your BMI is ", round(float(bmi),2) , "kgm^2.")
+
+if 25 < bmi < 29.9:
+    print("You are overweight.")
+    
+elif 18.5 < bmi < 24.9:
+    print("Congratulation! Your BMI is normal, please keep it up.")
+    
+else:
+    print("Your BMI is alarming bad, please check your diet and lifestyle!")

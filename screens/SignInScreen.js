@@ -27,6 +27,7 @@ export default function SignInScreen({ navigation }) {
   // ===================== FUNCTION LOGIN w Authenthication
 
   async function login() {
+    console.log("----- Login --------------")
     Keyboard.dismiss();
 
     try {
@@ -80,7 +81,6 @@ export default function SignInScreen({ navigation }) {
             onChangeText={(input) => setPassword(input)}
           />
           <View style={{flexDirection: "row"}}>
-
               <TouchableOpacity onPress={login} style={styles.loginButton}>
                     <Text style={styles.buttonText}>Log in</Text>
               </TouchableOpacity>
@@ -93,15 +93,17 @@ export default function SignInScreen({ navigation }) {
           </View>
           <TouchableOpacity
                 onPress={() => {
-                                  navigation.navigate("SignUp");
+                                  navigation.navigate("AccountScreen"); // Account
                                 }
                         } style={styles.switchButton}
           >
           <Text style={styles.switchText}>Register for a new account</Text>
               </TouchableOpacity>
+          
                   <Text style={styles.errorText}>{errorText}</Text>
                   <View style={{ height: 20, alignItems: "left"}}></View></ImageBackground>
       </View>
+
       </TouchableWithoutFeedback>
     );
   }

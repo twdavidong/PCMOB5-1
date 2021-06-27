@@ -1,0 +1,14 @@
+Exercise 1 https://www.pythonanywhere.com/user/repairaman/shares/520ecdb44daf4e2e8cbbda0c21fd6a84/
+Exercise 2 https://www.pythonanywhere.com/user/repairaman/shares/7cc314d74a9e4f31ba04779f5d46caae/
+Exercise 3 https://www.pythonanywhere.com/user/repairaman/shares/c5e472b0e7984586a8da8a04da677e00/
+Exercise 4 https://www.pythonanywhere.com/user/repairaman/shares/13183c2210fe416ab21a0c153f2ee36b/
+Exercise 5 https://www.pythonanywhere.com/user/repairaman/shares/deb11c799e684757812520e45e6599a4/
+
+
+Blog API
+Flask_app blog_api 
+https://www.pythonanywhere.com/user/repairaman/shares/a1a7bc50061748dc81936d53fef8881f/
+PythonAnywhere API
+https://www.pythonanywhere.com/user/repairaman/shares/c4261cf324e24b9599ff63e64ff7952f/
+Reactive Native Blog App
+https://github.com/twdavidong/PCMOB5-1.git
