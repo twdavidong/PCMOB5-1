@@ -1,0 +1,254 @@
+## Exercise 1
+print("Exercise 1")
+print("")
+length = float(input("Enter length: "))
+breadth = float(input("Enter breadth: "))
+area =length * breadth
+print("The area of the rectangle is ",area )
+print("")
+
+===============================================================
+## Exercise 2
+print ("Exercise 2")
+print ("")
+
+weight = input("Please enter your weight(kg) : ")
+
+weightkg = float(weight) 
+
+print("Your weight is ", weightkg, "kg.")
+
+height = input("Please enter your height(m) : ")
+
+heightm = float(height)
+
+print("Your height is ", heightm, "m.")
+
+bmi = (weightkg/heightm/heightm)
+
+print("Your BMI is ", round(float(bmi),2) , "kgm^2.")
+
+if 25 < bmi < 29.9:
+    print("You are overweight.")
+    
+elif 18.5 < bmi < 24.9:
+    print("Congratulation! Your BMI is normal, please keep it up.")
+    
+else:
+    print("Your BMI is alarming bad, please check your diet and lifestyle!")
+
+===============================================================
+## Exercise 3
+print("Exercise 3")
+print("")
+
+def fahtocel():
+            print("")
+            print("You would like to convert Fahrenheit to Celsius.")
+            temp = input("Please enter temperature in Fahreheit:")
+            celsius = (float (temp) - 32) * (5/9)
+            tempr = round(float(temp),2)
+            celsiusr = round(float(celsius),2)
+            print("The temperature for " + str (tempr) + " Farenheit, is " + str (celsiusr) + " degree Celsius.")
+
+def celtofah():
+            print("")
+            print("You would liike to convert Celsius to Fahrenheit.")
+            temp = input("Please enter temperature in Celsius:")
+            fahren = (float (temp) * (9/5)) + 32
+            tempr = round(float(temp),2)
+            fahrenr = round(float(fahren),2)
+            print("The temperature for " + str (tempr) + "  degree Celsius, is " + str (fahrenr) + " Farenheit.")
+
+def temper():
+    print("")
+    print("You are finding Celsius from Fahrenheit or Fahreheit to Celsius?")
+    qtemp = input("For Fahrenheit to Celsius, please press C, for Celsius to Fahrenheit, please press F, otherwise, press Enter to quit : ")
+
+    if qtemp == "C" or qtemp == "c":
+        fahtocel()
+        temper()
+
+    elif qtemp == "F" or qtemp == "f":
+        celtofah()
+        temper()
+
+    elif qtemp == "Q" or qtemp == "q":
+        print("Byebye~~~")
+temper()
+
+===============================================================
+## Exercise 4
+print("Exercise 4")
+print("")
+numbers_list = [12, 10, 32, 3, 66, 17, 42, 99, 20]
+
+for number in numbers_list:
+    print(number, number**2)
+print("")
+
+===============================================================
+## Exercise 5
+print("Exercise 5")
+print("")
+import random
+
+run = True
+while run:
+    qtimes = input("How many times would you like to roll?  Press q to stop.")
+    if qtimes =='q':
+        break
+
+    times = int (qtimes)
+    if times <21:
+        def rolling():
+            for i in range(times):
+                dice_num = i + 1
+                roll = random.randint(1, 6)
+                print("Dice", dice_num, "rolls", roll)
+        rolling()
+
+    else:
+        print("That is too much! Please give a lesser number.")
+
+===============================================================
+## Flask_appy.py
+
+from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_jwt import JWT, jwt_required, current_identity
+from flask_cors import CORS
+import datetime
+
+
+app = Flask(__name__)
+
+app.config["JWT_EXPIRATION_DELTA"] = datetime.timedelta(minutes=10) #expire in one day
+
+CORS(app, resources={r"/*": {"origins":"*"}}) ## allows web API access
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////home/repairaman/blog_api/db.sqlite"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# JWT setup
+
+app.config['SECRET_KEY'] = 'anything-here'
+
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and password == user.password:  ## change if encrypted
+        return user
+
+def identity(payload):
+    return User.query.filter_by(id=payload["identity"]).first()
+
+jwt = JWT(app, authenticate, identity)
+
+
+## Add model for BlogPost
+
+class BlogPost(db.Model):
+
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(80))
+    content = db.Column(db.String(400))
+
+    def json(self):
+        return {"id": self.id, \
+                "title": self.title, \
+                "content": self.content}
+
+## Add model for User
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(100))
+
+    def json(self):
+        return {"id": self.id, \
+                "username": self.username, \
+                "password": self.password}
+
+## New User Creation
+@app.route('/newuser', methods=['POST'])
+def newuser():
+    json_data = request.get_json()
+    username = json_data["username"]
+    password = json_data["password"]
+    users = User.query.all()
+    for u in users:
+        if username == u.username:
+            return { "Error": "User already exists" }
+    new_user = User(username=username, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    return { "Success": "New user " + username + " created" }
+
+## Users...
+@app.route('/users', methods=['POST'])
+def users():
+    users = User.query.all()
+    return jsonify([user.json() for user in users])
+
+## Create database
+db.create_all()
+
+@app.route('/create', methods=['POST'])
+def createPost():
+    json_data = request.get_json(force=True)
+    title = json_data["title"]
+    content = json_data["content"]
+    post = BlogPost(title=title, content=content)
+    db.session.add(post)
+    db.session.commit()
+    return post.json()
+
+## Posts...
+@app.route('/posts/<int:id>', methods=['GET','DELETE','PUT'])
+def getPost(id):        # find the post with the given id before deciding what to do with it
+    post = BlogPost.query.get(id)
+
+    if request.method == 'DELETE':
+        db.session.delete(post)
+        db.session.commit()
+        return {"Message": "Post id " + str(id) + " has been deleted."}
+
+    if request.method == 'PUT':
+        json_data = request.json ##no need to get_json(force=True) if the sender sends as Content-Type: application/json
+
+        ## check if the key exists in the dictionary
+        if 'title' in json_data:
+            post.title = json_data['title']
+        if 'content' in json_data:
+            post.content = json_data['content']
+        db.session.commit()
+
+    return post.json()
+
+@app.route('/posts')
+def getAllPosts():
+    posts = BlogPost.query.all()
+    json_posts = []
+    for post in posts:
+        json_posts.append(post.json())
+    return jsonify(json_posts)
+    #Alternatively, return jsonify([post.json() for post in posts])
+
+## WhoAmI
+@app.route('/whoami')
+@jwt_required()
+def whoami():
+        return{"username": current_identity.username}
+
+@app.route('/', methods=['GET','POST'])
+def index():
+    if request.method == 'POST':
+        return {"about": "This is an API for a blog. GET / to read more."}
+    return render_template("index.html")
+
+### PythonAnywhere API link
+#### https://www.pythonanywhere.com/user/repairaman/shares/c4261cf324e24b9599ff63e64ff7952f/
+
+
+===============================================================

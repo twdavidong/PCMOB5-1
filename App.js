@@ -6,9 +6,7 @@ import SignUpScreen from "./screens/SignUpScreen";
 import AccountScreen from "./screens/AccountScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import TabStack from "./components/TabStack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from "axios";
 
 
 const Stack = createStackNavigator();
@@ -19,7 +17,7 @@ export default function App() {
 
   async function loadToken() {
     const token = await AsyncStorage.getItem("token");
-    if(token) {
+    if (token) {
       setSignedIn(true);
     }
     setLoading(false);
@@ -39,7 +37,6 @@ export default function App() {
         mode="modal" 
         headerMode="none"
         initialRouteName = {signedIn ? "Account" : "SignIn"}
-       // screenOptions={{ animationEnabled: false }}
       >
         <Stack.Screen component={AccountScreen} name="Account" />
         <Stack.Screen component={SignInScreen} name="SignIn" />

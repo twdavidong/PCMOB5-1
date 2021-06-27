@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -39,17 +39,14 @@ export default function SignInScreen({ navigation }) {
       console.log("Success logging in~~");
       // console.log(response);
       
-      await AsyncStorage.setItem("token", response.data.access_token);
-      setLoading(false);
+      AsyncStorage.setItem("token", response.data.access_token);
       navigation.navigate("Account");
       } 
     
     catch (error) {
-        setLoading(false);
         console.log("Error logging in!");
         console.log(error.response);
 
-        setErrorText(error.response.data.description);
       }
     }    
 
@@ -59,8 +56,8 @@ export default function SignInScreen({ navigation }) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}> <ImageBackground source={require('../assets/image.jpg')} style={styles.image}>
-          <Text style={styles.title}>Sign in to Blog</Text>
           <Text style={styles.fieldTitle}>Username</Text>
+          <Text style={styles.title}>Sign in to Blog Persistence!</Text>
           <TextInput
             style={styles.input}
             autoCapitalize="none"

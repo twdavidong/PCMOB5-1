@@ -13,15 +13,11 @@ export default function AccountScreen({ navigation }) {
   async function getUsername () {
     console.log("----Getting Username -----");
     const token = await AsyncStorage.getItem("token");  // first await....
-    if (token == null) {
-      signOut();
-      return;
-    }
     console.log(`Token is ${token}`);
     
     try {
       const response = await axios.get(API + API_WHOAMI, {     // second await....
-        headers: { Authorization : `JWT {token}` },
+        headers: { Authorization: `JWT ${token}` },
       });
           console.log("Got the username!");
           console.log(response);
@@ -46,9 +42,8 @@ export default function AccountScreen({ navigation }) {
             setUsername(<ActivityIndicator/>);
             getUsername();
     });
-      getUsername();
-
-    return removeListener;
+       getUsername();
+      return removeListener;
   }, []);
 
   function signOut() {
@@ -57,10 +52,11 @@ export default function AccountScreen({ navigation }) {
   }
 
   return (
+
     <View style={commonStyles.container}>
       <Text>Account Screen</Text>
       <Text>{username}</Text>
-      <Button title="Sign out" onPress={signOut} />
+      <Button title="Sign out" onPress={signOut} />      
     </View>
   );
 }
