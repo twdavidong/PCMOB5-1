@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
+// import ShowScreen from "ShowScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -40,13 +41,12 @@ export default function SignInScreen({ navigation }) {
       // console.log(response);
       
       AsyncStorage.setItem("token", response.data.access_token);
-      navigation.navigate("Account");
+      navigation.navigate("Show");        // Managed to log in, go to ShowScreen... 
       } 
     
     catch (error) {
         console.log("Error logging in!");
         console.log(error.response);
-
       }
     }    
 
@@ -56,8 +56,8 @@ export default function SignInScreen({ navigation }) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}> <ImageBackground source={require('../assets/image.jpg')} style={styles.image}>
-          <Text style={styles.fieldTitle}>Username</Text>
           <Text style={styles.title}>Sign in to Blog Persistence!</Text>
+          <Text style={styles.fieldTitle}>Username</Text>
           <TextInput
             style={styles.input}
             autoCapitalize="none"
@@ -100,7 +100,6 @@ export default function SignInScreen({ navigation }) {
                   <Text style={styles.errorText}>{errorText}</Text>
                   <View style={{ height: 20, alignItems: "left"}}></View></ImageBackground>
       </View>
-
       </TouchableWithoutFeedback>
     );
   }
